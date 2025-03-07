@@ -1,3 +1,4 @@
+import { autor } from "../models/Autor.js";
 import video from "../models/video.js";
 
 class VideoController {
@@ -29,16 +30,22 @@ class VideoController {
   }
 
   static async cadastrarVideo(req, res) {
-    try {
-      const novoVideo = await video.create(req.body);
+    const novoVideo = req.body;
 
+    try {
+      const autorEncontrado = await autor.findById(novoVideo.autor);
+      const videoCompleto = {
+        ...novoVideo,
+        autor: { ...autorEncontrado._doc },
+      };
+      const videoCriado = await video.create(videoCompleto);
       res.status(201).json({
         message: "Vídeo criado!",
-        video: novoVideo,
+        video: videoCriado,
       });
     } catch (error) {
       res.status(500).json({
-        message: `Falha ao cadastrar o video - ${error.mesage}`,
+        message: `Falha ao cadastrar o video - ${error}`,
       });
     }
   }

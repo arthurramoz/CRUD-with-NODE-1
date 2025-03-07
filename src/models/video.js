@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { autorSchema } from "./Autor.js";
 
 const videoSchema = new mongoose.Schema(
   {
@@ -6,7 +7,8 @@ const videoSchema = new mongoose.Schema(
     name: { type: String, required: true },
     description: { type: String },
     duration: { type: Number },
-    views: { type: Number },
+    views: { type: String },
+    autor: autorSchema,
   },
   { versionKey: false }
 );
